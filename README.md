@@ -16,5 +16,3 @@ Contributor: - Muhammad Umair Shaikh
 - Built an `LLMChain` that combined the prompt with the model.  
 - Tested it with a **200-word paragraph about Artificial Intelligence**.  
 - Modified the prompt to summarize into **1 sentence** and compared outputs.  
-
-📸 *[Screenshot of 3-sentence and 1-sentence summaries here]* 
