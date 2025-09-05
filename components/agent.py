@@ -1,40 +1,46 @@
-# components/agent.py
+# components/agents.py
 
-from langchain.agents import initialize_agent, Tool, AgentType
+from langchain.agents import initialize_agent, AgentType
 from langchain_openai import AzureChatOpenAI
-from components.summarizer import build_summarizer
+from components.tools import build_text_summarizer_tool
 
 
-def build_agent(api_key, endpoint, deployment, api_version, sentences=3):
+def build_summarization_agent(
+    api_key: str,
+    endpoint: str,
+    deployment: str,
+    api_version: str,
+    temperature: float = 0,
+    sentences: int = 3,
+):
     """
-    Build a zero-shot-react-description agent with a custom TextSummarizer tool.
+    Build a Zero-Shot-React agent with a TextSummarizer tool.
     """
 
-    # Build summarizer chain (reusing Task 2)
-    summarizer = build_summarizer(api_key, endpoint, deployment, api_version, sentences)
-
-    # Wrap summarizer into a Tool
-    summarizer_tool = Tool(
-        name="TextSummarizer",
-        func=lambda text: summarizer.invoke({"text": text}),
-        description="Use this tool to summarize text into a concise format."
-    )
-
-    # LLM for the agent (same as Task 2 model)
+    # LLM for reasoning & agent orchestration
     llm = AzureChatOpenAI(
         openai_api_key=api_key,
         azure_endpoint=endpoint,
         deployment_name=deployment,
         openai_api_version=api_version,
-        temperature=0
+        temperature=temperature,
     )
 
-    # Build the agent
+    # Add the summarizer tool
+    summarizer_tool = build_text_summarizer_tool(
+        api_key=api_key,
+        endpoint=endpoint,
+        deployment=deployment,
+        api_version=api_version,
+        sentences=sentences,
+    )
+
+    # Initialize the agent
     agent = initialize_agent(
         tools=[summarizer_tool],
         llm=llm,
         agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
-        verbose=False  # shows reasoning steps
+        verbose=True,  # see reasoning steps
     )
 
     return agent
