@@ -16,3 +16,11 @@ Contributor: - Muhammad Umair Shaikh
 - Built an `LLMChain` that combined the prompt with the model.  
 - Tested it with a **200-word paragraph about Artificial Intelligence**.  
 - Modified the prompt to summarize into **1 sentence** and compared outputs.  
+
+
+### Task 3: Exploring Retrievers with Summarization
+- Chunks and Embeddings Vectors
+![Result](results/task3.1.png)
+
+- Summary
+![Summary](results/task3.2.png)
