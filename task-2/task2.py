@@ -58,7 +58,7 @@ summary_one = one_sentence_chain.run({"text": input_text})
 print("\n1-sentence summary:\n", summary_one)
 
 # Tokens Summary
-# 3-sentence summary with token tracking
+# 3-sentence summary token tracking
 with get_openai_callback() as cb:
     summary = summarization_chain.run({"text": input_text})
 
@@ -67,7 +67,7 @@ with get_openai_callback() as cb:
     print(f"Prompt tokens: {cb.prompt_tokens}")
     print(f"Completion tokens: {cb.completion_tokens}")
 
-# 1-sentence summary with token tracking
+# 1-sentence summary token tracking
 with get_openai_callback() as cb:
     summary_one = one_sentence_chain.run({"text": input_text})
 
