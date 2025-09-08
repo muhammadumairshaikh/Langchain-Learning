@@ -1,55 +1,52 @@
-# task-2/task2.py
-
-import os
-from dotenv import load_dotenv
-from langchain.callbacks import get_openai_callback
 from components.config_loader import load_config
 from components.summarizer import build_summarizer
 
-# Load env vars
-load_dotenv()
-config = load_config()
 
-# Input text
-input_text = """
-Artificial intelligence (AI) is a rapidly advancing field of computer science that focuses on the creation of systems capable of performing tasks that normally require human intelligence. These tasks include problem-solving, natural language understanding, perception, and decision-making. The progress in AI has been driven by advances in machine learning, particularly deep learning, which leverages large datasets and powerful computing resources to train complex models. One of the most notable applications of AI is in natural language processing, where models such as chatbots and virtual assistants are capable of understanding and responding to human language with increasing sophistication. AI also plays a significant role in computer vision, enabling systems to recognize and categorize images, detect objects, and even interpret medical scans. Additionally, AI has been integrated into recommendation engines, predictive analytics, robotics, and autonomous vehicles, transforming multiple industries. Despite its benefits, AI also raises ethical concerns, including bias in algorithms, job displacement, and questions about accountability. Governments, researchers, and organizations are actively exploring frameworks to ensure AI is developed responsibly. The potential of AI is vast, and while it offers opportunities for innovation and efficiency, it also requires careful oversight to balance progress with societal impact.
-"""
+def main():
+    config = load_config()
 
-# Build summarizers
-summarizer_3 = build_summarizer(
-    config["api_key"],
-    config["endpoint"],
-    config["deployment"],
-    config["api_version"],
-    sentences=3
-)
+    text = """
+    Artificial intelligence (AI) has rapidly evolved over the past few decades, transforming industries
+    and reshaping the way humans interact with technology. Originally rooted in academic research
+    focused on problem-solving and symbolic methods, AI has now become a cornerstone of modern
+    computing, driven by machine learning and deep neural networks. In healthcare, AI systems assist
+    doctors in diagnosing diseases more accurately and developing personalized treatment plans. In
+    finance, algorithms detect fraudulent transactions and automate trading at speeds beyond human
+    capability. The transportation sector is witnessing breakthroughs through self-driving cars and
+    intelligent traffic management systems. Meanwhile, AI-powered chatbots and virtual assistants are
+    revolutionizing customer service by providing instant, around-the-clock support. Despite these
+    advancements, challenges persist, including bias in AI models, ethical concerns about data usage,
+    and fears of job displacement due to automation. Policymakers, researchers, and industry leaders
+    are increasingly collaborating to ensure that AI is developed and deployed responsibly. As the field
+    continues to expand, AI holds the potential to tackle global issues such as climate change,
+    healthcare accessibility, and sustainable economic growth, making it one of the most important
+    technologies of the 21st century.
+    """
 
-summarizer_1 = build_summarizer(
-    config["api_key"],
-    config["endpoint"],
-    config["deployment"],
-    config["api_version"],
-    sentences=1
-)
+    # 3 sentence summary
+    summarizer_3 = build_summarizer(
+        api_key=config["api_key"],
+        endpoint=config["endpoint"],
+        deployment=config["deployment"],
+        api_version=config["api_version"],
+        summary_sentences=3
+    )
+    result_3 = summarizer_3.run(text)
+    print("\n=== 3 Sentence Summary ===")
+    print(result_3)
 
-# Run summarizations
-summary_3 = summarizer_3.run({"text": input_text})
-print("3-sentence summary:\n", summary_3)
+    # 1 sentence summary
+    summarizer_1 = build_summarizer(
+        api_key=config["api_key"],
+        endpoint=config["endpoint"],
+        deployment=config["deployment"],
+        api_version=config["api_version"],
+        summary_sentences=1
+    )
+    result_1 = summarizer_1.run(text)
+    print("\n=== 1 Sentence Summary ===")
+    print(result_1)
 
-print("------------------------------")
 
-summary_1 = summarizer_1.run({"text": input_text})
-print("\n1-sentence summary:\n", summary_1)
-
-# Track tokens
-with get_openai_callback() as cb:
-    summarizer_3.run({"text": input_text})
-    print("\n--- Token Usage (3-sentence) ---")
-    print(f"Prompt tokens: {cb.prompt_tokens}")
-    print(f"Completion tokens: {cb.completion_tokens}")
-
-with get_openai_callback() as cb:
-    summarizer_1.run({"text": input_text})
-    print("\n--- Token Usage (1-sentence) ---")
-    print(f"Prompt tokens: {cb.prompt_tokens}")
-    print(f"Completion tokens: {cb.completion_tokens}")
+if __name__ == "__main__":
+    main()
