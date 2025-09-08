@@ -108,6 +108,9 @@ def build_word_count_tool(
 ) -> Tool:
     """Return a simple Tool that counts words in the given text."""
 
+    if description is None:
+        description = "Counts the number of words in the given text string."
+
     def _count_words(text: str) -> str:
         return f"Word count: {len(text.split())}"
 
