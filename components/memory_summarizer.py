@@ -15,10 +15,11 @@ def build_summarizer_with_buffer_memory(api_key, endpoint, deployment, api_versi
 
     prompt = PromptTemplate(
         input_variables=["text"],
-        template="""
-Summarize the following text in **no more than 3 concise sentences**:
-{text}
-""",
+        template = """
+        Summarize the following text in **ONLY 2 sentences**. 
+        Keep it concise and avoid repeating details:
+        {text}
+        """
     )
 
     memory = ConversationBufferMemory(memory_key="chat_history", k=3, return_messages=True)
@@ -37,10 +38,11 @@ def build_summarizer_with_summary_memory(api_key, endpoint, deployment, api_vers
 
     prompt = PromptTemplate(
         input_variables=["text"],
-        template="""
-Summarize the following text in **no more than 3 concise sentences**:
-{text}
-""",
+        template = """
+        Summarize the following text in **ONLY 2 sentences**. 
+        Keep it concise and avoid repeating details:
+        {text}
+        """
     )
 
     memory = ConversationSummaryMemory(llm=llm, memory_key="chat_history", return_messages=True)
