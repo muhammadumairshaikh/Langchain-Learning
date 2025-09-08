@@ -18,7 +18,17 @@ def build_summarizer(api_key, endpoint, deployment, api_version, sentences=3, te
 
     prompt_template = PromptTemplate(
         input_variables=["text"],
-        template=f"Summarize the following text into exactly {sentences} sentence(s):\n\n{{text}}"
-    )
+                template=f"""
+                You are an expert summarizer.
+
+                Task: Summarize the following text into exactly {sentences} sentence(s).
+                - Do not write more or fewer sentences.
+                - Each sentence should be concise, factual, and focused.
+                - Avoid introductions, commentary, or meta text.
+
+                Text:
+                {{text}}
+                """
+            )
 
     return LLMChain(llm=llm, prompt=prompt_template)

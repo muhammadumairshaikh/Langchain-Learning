@@ -1,33 +1,41 @@
 # components/retriever.py
 
+
+# components/retriever.py
+
 from langchain_community.document_loaders import TextLoader
-from langchain.text_splitter import CharacterTextSplitter
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import FAISS
 from langchain_openai import AzureOpenAIEmbeddings
 
-def build_retriever(file_path, api_key, endpoint, embedding_deployment, api_version, chunk_size=200, overlap=20, k=3):
-   
-   # Load Text File
+
+def build_retriever(file_path: str, env: dict):
+    """Builds a retriever from a text file using Azure embeddings and FAISS."""
+
+    # Step 1: Load raw content
     loader = TextLoader(file_path, encoding="utf-8")
-    documents = loader.load()
+    raw_docs = loader.load()
 
-    # Split text into chunks
-    splitter = CharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=overlap)
-    docs = splitter.split_documents(documents)
-    print(f" Total chunks created: {len(docs)}")
+    # Step 2: Break content into overlapping chunks
+    text_splitter = RecursiveCharacterTextSplitter(
+        chunk_size=200,
+        chunk_overlap=20
+    )
+    chunked_docs = text_splitter.split_documents(raw_docs)
+    print(f"Created {len(chunked_docs)} chunks from input file.")
 
-    # Create embeddings
-    embeddings = AzureOpenAIEmbeddings(
-        openai_api_key=api_key,
-        azure_endpoint=endpoint,
-        deployment=embedding_deployment,   
-        openai_api_version=api_version,
+    # Step 3: Generate embeddings with Azure
+    embed_model = AzureOpenAIEmbeddings(
+        openai_api_key=env["api_key"],
+        azure_endpoint=env["endpoint"],
+        deployment=env["embedding_deployment"],
+        openai_api_version=env["api_version"],
     )
 
-    # Build FAISS vector store
-    vectorstore = FAISS.from_documents(docs, embeddings)
-    print(f" Total embedding vectors stored: {len(vectorstore.index_to_docstore_id)}")
+    # Step 4: Build FAISS index
+    vectorstore = FAISS.from_documents(chunked_docs, embed_model)
+    print(f"Stored {len(vectorstore.index_to_docstore_id)} embeddings in FAISS.")
 
-    # Retriever
-    retriever = vectorstore.as_retriever(search_type="similarity", search_kwargs={"k": k})
-    return retriever, docs
+    # Step 5: Return retriever
+    return vectorstore.as_retriever()
+
