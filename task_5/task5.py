@@ -18,10 +18,11 @@ def main():
 
     # Build the LLM directly here
     llm = AzureChatOpenAI(
-        openai_api_key=config["api_key"],
-        azure_endpoint=config["endpoint"],
-        deployment_name=config["deployment"],
-        openai_api_version=config["api_version"],
+        env= config,
+        # openai_api_key=config["api_key"],
+        # azure_endpoint=config["endpoint"],
+        # deployment_name=config["deployment"],
+        # openai_api_version=config["api_version"],
         temperature=0,
     )
 
