@@ -8,15 +8,17 @@ from components.config_loader import load_config
 
 
 # 🔹 Task 2: Basic Summarizer (no memory)
-def build_summarizer(api_key, endpoint, deployment, api_version, sentences=3, temperature=0):
+def build_summarizer(sentences=3, temperature=0):
     """
     Returns an LLMChain that summarizes text into a given number of sentences.
     """
+    creds = load_config()
+
     llm = AzureChatOpenAI(
-        openai_api_key=api_key,
-        azure_endpoint=endpoint,
-        deployment_name=deployment,
-        openai_api_version=api_version,
+        openai_api_key=creds["api_key"],
+        azure_endpoint=creds["endpoint"],
+        deployment_name=creds["deployment"],
+        openai_api_version=creds["api_version"],
         temperature=temperature
     )
 
