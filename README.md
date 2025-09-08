@@ -68,3 +68,50 @@ Word Count: 101
 ✅ Outcome: Successfully demonstrated an agent workflow combining retrieval + summarization + word count into a seamless process.
 
 - This shows how an agent can think autonomously and perform right set of actions.
+
+
+
+### Task 6: Using Memory to Improve Summarization
+🔹 Objective
+
+We compared two memory types in LangChain:
+ConversationBufferMemory → Stores the last N interactions verbatim. -> we kept last 3 records.
+ConversationSummaryMemory → Stores a compressed summary of past interactions.
+
+
+🔹 Input Texts
+
+Machine Learning (Input):
+Machine learning is a branch of artificial intelligence that focuses on enabling computers to learn patterns from data and make predictions or decisions without being explicitly programmed. It involves training algorithms on large datasets to identify trends, classify information, or forecast outcomes. Common applications include spam detection, recommendation systems, fraud detection, and medical diagnosis. Machine learning models can be supervised, unsupervised, or reinforcement-based depending on the type of data and problem. The success of machine learning largely depends on data quality and computational resources, making it a driving force behind modern AI advancements.
+
+Deep Learning (Input):
+Deep learning is a specialized area of machine learning that uses artificial neural networks with multiple layers to process complex data. It excels at handling tasks like image recognition, speech processing, and natural language understanding. By mimicking how the human brain processes information, deep learning can capture intricate patterns in data, leading to breakthroughs such as self-driving cars, advanced chatbots, and medical image analysis. However, deep learning requires massive amounts of labeled data and high computational power. Its ability to improve performance with more data makes it one of the most influential technologies in modern AI development.
+
+🔹 Results
+🔹 Using ConversationBufferMemory
+
+Machine Learning Summary:
+Machine learning, a subset of artificial intelligence, allows computers to learn from data and make predictions or decisions autonomously by training algorithms on large datasets. Its effectiveness relies on data quality and computational resources, with applications ranging from spam detection to medical diagnosis.
+
+
+Deep Learning Summary:
+Deep learning, a subset of machine learning, utilizes multi-layered artificial neural networks to effectively process complex data, enabling advancements in areas like image recognition and natural language understanding. Despite its reliance on large labeled datasets and significant computational resources, deep learning's capacity to enhance performance with increased data has made it a pivotal technology in AI.
+
+
+🔹 Using ConversationSummaryMemory
+
+Machine Learning Summary:
+Machine learning, a subset of artificial intelligence, allows computers to learn from data and make predictions or decisions autonomously by training algorithms on large datasets. Its effectiveness relies on data quality and computational resources, with applications ranging from spam detection to medical diagnosis.
+
+
+Deep Learning Summary:
+Deep learning, a subset of machine learning, utilizes multi-layered artificial neural networks to effectively process complex data, enabling advancements in areas like image recognition and natural language understanding. Despite its reliance on large labeled datasets and significant computational resources, deep learning's capacity to enhance performance with increased data has made it a pivotal technology in AI.
+
+
+🔹 Key Insight
+
+BufferMemory → keeps full raw history, so summaries are detailed but sometimes verbose.
+
+SummaryMemory → keeps a compressed version of history, making outputs shorter and more focused.
+
+✅ Purpose: This task shows how memory changes summarization across related inputs and helps decide whether an app should prioritize detail (BufferMemory) or conciseness (SummaryMemory)
