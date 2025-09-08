@@ -23,16 +23,16 @@ def build_summarizer(api_key, endpoint, deployment, api_version, sentences=3, te
     prompt_template = PromptTemplate(
         input_variables=["text"],
         template=f"""
-You are an expert summarizer.
+        You are an expert summarizer.
 
-Task: Summarize the following text into exactly {sentences} sentence(s).
-- Do not write more or fewer sentences.
-- Each sentence should be concise, factual, and focused.
-- Avoid introductions, commentary, or meta text.
+        Task: Summarize the following text into exactly {sentences} sentence(s).
+        - Do not write more or fewer sentences.
+        - Each sentence should be concise, factual, and focused.
+        - Avoid introductions, commentary, or meta text.
 
-Text:
-{{text}}
-"""
+        Text:
+        {{text}}
+        """
     )
 
     return LLMChain(llm=llm, prompt=prompt_template)
@@ -66,17 +66,17 @@ def build_summarizer_with_memory(sentences: int = 3, memory_type: str | None = N
     prompt_template = PromptTemplate(
         input_variables=["text"],
         template=f"""
-You are an expert summarizer.
+        You are an expert summarizer.
 
-Task: Summarize the following text into exactly {sentences} sentence(s).
-- Do not write more or fewer sentences.
-- Each sentence should be concise, factual, and focused.
-- Avoid introductions, commentary, or meta text.
-- If prior conversation exists, incorporate it into the summary.
+        Task: Summarize the following text into exactly {sentences} sentence(s).
+        - Do not write more or fewer sentences.
+        - Each sentence should be concise, factual, and focused.
+        - Avoid introductions, commentary, or meta text.
+        - If prior conversation exists, incorporate it into the summary.
 
-Text:
-{{text}}
-"""
+        Text:
+        {{text}}
+        """
     )
 
     memory = None
