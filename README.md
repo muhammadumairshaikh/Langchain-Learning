@@ -91,21 +91,21 @@ Deep learning is a specialized area of machine learning that uses artificial neu
 🔹 Using ConversationBufferMemory
 
 Machine Learning Summary:
-Machine learning, a subset of artificial intelligence, allows computers to learn from data and make predictions or decisions autonomously by training algorithms on large datasets. Its effectiveness relies on data quality and computational resources, with applications ranging from spam detection to medical diagnosis.
+Machine learning is a subset of artificial intelligence that allows computers to learn from data and make predictions or decisions autonomously. Its effectiveness relies on the quality of data and computational resources, with applications in areas such as spam detection, recommendation systems, and medical diagnosis.
 
 
 Deep Learning Summary:
-Deep learning, a subset of machine learning, utilizes multi-layered artificial neural networks to effectively process complex data, enabling advancements in areas like image recognition and natural language understanding. Despite its reliance on large labeled datasets and significant computational resources, deep learning's capacity to enhance performance with increased data has made it a pivotal technology in AI.
+Deep learning is a branch of machine learning that utilizes multi-layered artificial neural networks to analyze complex data, excelling in tasks like image recognition and natural language understanding. It demands significant labeled data and computational resources, but its capacity to enhance performance with increased data has made it a pivotal technology in AI advancements.
 
 
 🔹 Using ConversationSummaryMemory
 
 Machine Learning Summary:
-Machine learning, a subset of artificial intelligence, allows computers to learn from data and make predictions or decisions autonomously by training algorithms on large datasets. Its effectiveness relies on data quality and computational resources, with applications ranging from spam detection to medical diagnosis.
+Machine learning is a subset of artificial intelligence that allows computers to learn from data and make predictions or decisions autonomously. Its effectiveness relies on the quality of data and computational resources, with applications in areas such as spam detection, recommendation systems, and medical diagnosis.
 
 
 Deep Learning Summary:
-Deep learning, a subset of machine learning, utilizes multi-layered artificial neural networks to effectively process complex data, enabling advancements in areas like image recognition and natural language understanding. Despite its reliance on large labeled datasets and significant computational resources, deep learning's capacity to enhance performance with increased data has made it a pivotal technology in AI.
+Deep learning is a branch of machine learning that utilizes multi-layered artificial neural networks to analyze complex data, excelling in tasks like image recognition and natural language understanding. It demands substantial labeled data and computational resources, but its capacity to enhance performance with increased data has made it a pivotal technology in AI advancements.
 
 
 🔹 Key Insight
