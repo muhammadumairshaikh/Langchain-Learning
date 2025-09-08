@@ -14,10 +14,8 @@ def build_summarization_agent(
     sentences: int = 3,
 ):
     """
-    Build a Zero-Shot-React agent with a TextSummarizer tool.
+    Build a Zero-Shot-React agent with a TextSummarizer tool (Task 4 style).
     """
-
-    # LLM for reasoning & agent orchestration
     llm = AzureChatOpenAI(
         openai_api_key=api_key,
         azure_endpoint=endpoint,
@@ -26,7 +24,6 @@ def build_summarization_agent(
         temperature=temperature,
     )
 
-    # Add the summarizer tool
     summarizer_tool = build_text_summarizer_tool(
         api_key=api_key,
         endpoint=endpoint,
@@ -35,12 +32,24 @@ def build_summarization_agent(
         sentences=sentences,
     )
 
-    # Initialize the agent
-    agent = initialize_agent(
+    return initialize_agent(
         tools=[summarizer_tool],
         llm=llm,
         agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
-        verbose=True,  # see reasoning steps
+        verbose=True,
     )
 
-    return agent
+
+
+# Task 5
+def build_agent(tools, llm, verbose: bool = True):
+    """
+    General-purpose agent builder (Task 5 style).
+    Pass any list of tools and an LLM.
+    """
+    return initialize_agent(
+        tools=tools,
+        llm=llm,
+        agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+        verbose=verbose,
+    )
