@@ -7,40 +7,47 @@ from components.summarizer import build_summarizer
 from components.retriever import build_retriever
 
 def main():
+    # Load environment variables
     config = load_config()
 
-    # Build retriever
-    retriever, docs = build_retriever(
-        file_path="task_3/ai_intro.txt",  
-        api_key=config["api_key"],
-        endpoint=config["endpoint"],
-        embedding_deployment="text-embedding-3-small",  
-        api_version=config["api_version"]
+    # Build retriever on ai_intro.txt
+    retriever = build_retriever(
+        file_path="task_3/ai_intro.txt",
+        env=config
     )
-
-    # Debug info: total docs and sample chunk
-    print(f"\n Total chunks created: {len(docs)}")
-    if docs:
-        print(f"\n Sample chunk (first 200 chars):\n{docs[0].page_content[:200]}")
 
     # Query retriever
     query = "AI milestones"
     retrieved_docs = retriever.invoke(query)
 
+    # Show each retrieved chunk separately
+    print("\n📌 Retrieved Chunks:")
+    for i, doc in enumerate(retrieved_docs, 1):
+        print(f"\n--- Chunk {i} ---")
+        print(doc.page_content)
+
+    # Combine retrieved text
+    combined_text = " ".join([doc.page_content for doc in retrieved_docs])
+
+    # Show complete retrieved text
+    print("\n📌 Complete Retrieved Text:")
+    print(combined_text)
+
     # Summarizer
     summarizer = build_summarizer(
         config["api_key"],
         config["endpoint"],
-        config["deployment"],   
+        config["deployment"],
         config["api_version"],
         sentences=3
     )
 
-    # Retrieval
-    retrieved_text = " ".join([doc.page_content for doc in retrieved_docs])
-    summary = summarizer.invoke({"text": retrieved_text})
+    # Generate summary
+    summary = summarizer.invoke({"text": combined_text})
 
-    print("\n Summary of AI milestones:\n", summary)
+    print("\n📌 Summary:")
+    print(summary["text"] if isinstance(summary, dict) else summary)
+
 
 if __name__ == "__main__":
     main()
