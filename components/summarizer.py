@@ -4,6 +4,7 @@ from langchain_openai import AzureChatOpenAI
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 
+# For Task2
 def build_summarizer(api_key, endpoint, deployment, api_version, sentences=3, temperature=0.1):
     """
     Returns an LLMChain that summarizes text into a given number of sentences.
