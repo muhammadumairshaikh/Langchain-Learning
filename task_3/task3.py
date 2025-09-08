@@ -1,46 +1,54 @@
-# task-3/task3.py
-
-# task-3/task3.py
-
 from components.config_loader import load_config
-from components.summarizer import build_summarizer
 from components.retriever import build_retriever
+from components.summarizer import build_summarizer
+
 
 def main():
     config = load_config()
 
+    file_path = "task_3/ai_intro.txt"
+
     # Build retriever
-    retriever, docs = build_retriever(
-        file_path="task_3/ai_intro.txt",  
+    retriever = build_retriever(
         api_key=config["api_key"],
         endpoint=config["endpoint"],
-        embedding_deployment="text-embedding-3-small",  
-        api_version=config["api_version"]
+        deployment=config["embedding_deployment"],  # Embedding Model
+        api_version=config["api_version"],
+        file_path=file_path
     )
 
-    # Debug info: total docs and sample chunk
-    print(f"\n Total chunks created: {len(docs)}")
-    if docs:
-        print(f"\n Sample chunk (first 200 chars):\n{docs[0].page_content[:200]}")
+    # Count total chunks
+    total_chunks = len(retriever.vectorstore.docstore._dict)
+    print(f"\n✅ Total chunks created: {total_chunks}")
 
     # Query retriever
     query = "AI milestones"
-    retrieved_docs = retriever.invoke(query)
+    retrieved_docs = retriever.invoke(query)   
 
-    # Summarizer
+    # Show top retrieved chunks
+    print("\n🔎 Top Retrieved Chunks:")
+    for i, doc in enumerate(retrieved_docs, start=1):
+        print(f"\n--- Chunk {i} ---")
+        print(doc.page_content[:300], "...")  # show first 300 chars
+
+    # Combine retrieved chunks into text
+    retrieved_text = " ".join([doc.page_content for doc in retrieved_docs])
+
+    # Build summarizer
     summarizer = build_summarizer(
-        config["api_key"],
-        config["endpoint"],
-        config["deployment"],   
-        config["api_version"],
+        api_key=config["api_key"],
+        endpoint=config["endpoint"],
+        deployment=config["deployment"],   # Chat model deployment
+        api_version=config["api_version"],
         sentences=3
     )
 
-    # Retrieval
-    retrieved_text = " ".join([doc.page_content for doc in retrieved_docs])
-    summary = summarizer.invoke({"text": retrieved_text})
+    # Run summary
+    summary = summarizer.run(retrieved_text)
 
-    print("\n Summary of AI milestones:\n", summary)
+    print("\n📝 Final Summary:")
+    print(summary)
+
 
 if __name__ == "__main__":
     main()
