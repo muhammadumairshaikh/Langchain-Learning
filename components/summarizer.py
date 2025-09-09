@@ -3,7 +3,7 @@ from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
 
 
-def build_summarizer(api_key: str, endpoint: str, deployment: str, api_version: str, summary_sentences: int = 3) -> LLMChain:
+def build_summarizer(api_key: str, endpoint: str, deployment: str, api_version: str, sentences: int = 3) -> LLMChain:
     """
     Build a strict summarization chain using Azure OpenAI.
     Summarizes input text into the exact number of sentences specified,
@@ -26,7 +26,7 @@ def build_summarizer(api_key: str, endpoint: str, deployment: str, api_version: 
             "Text:\n{text}\n\n"
             "Summary:"
         ),
-        partial_variables={"summary_sentences": str(summary_sentences)}
+        partial_variables={"summary_sentences": str(sentences)}
     )
 
     return LLMChain(llm=llm, prompt=prompt_template)
