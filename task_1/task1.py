@@ -13,7 +13,7 @@ def main():
     print("✅ Environment Variables Loaded:")
     print(f"API Key: {os.getenv('AZURE_OPENAI_API_KEY')}")
     print(f"Endpoint: {os.getenv('AZURE_OPENAI_ENDPOINT')}")
-    print(f"API Version: {os.getenv('AZURE_OPENAI_API_VERSION')}")
+    print(f"API Version: {os.getenv('OPENAI_API_VERSION')}")
     print(f"Chat Deployment: {config['chat_deployment']}")
     print(f"Embedding Deployment: {config['embedding_deployment']}")
 
