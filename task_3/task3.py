@@ -7,47 +7,29 @@ def main():
     config = load_config()
 
     file_path = "task_3/ai_intro.txt"
+    query = "AI milestones"
 
     # Build retriever
-    retriever = build_retriever(
-        api_key=config["api_key"],
-        endpoint=config["endpoint"],
-        deployment=config["embedding_deployment"],  # Embedding Model
-        api_version=config["api_version"],
-        file_path=file_path
-    )
+    retriever = build_retriever(file_path, config["embedding_deployment"])
 
-    # Count total chunks
-    total_chunks = len(retriever.vectorstore.docstore._dict)
-    print(f"\n✅ Total chunks created: {total_chunks}")
+    # Retrieve top chunks
+    retrieved_docs = retriever.get_relevant_documents(query)
+    # print(f"\n🔹 Retrieved {len(retrieved_docs)} relevant chunks for query: '{query}'\n")
 
-    # Query retriever
-    query = "AI milestones"
-    retrieved_docs = retriever.invoke(query)   
+    for i, doc in enumerate(retrieved_docs[:3], 1):  # show only top 3
+        print(f"--- Chunk {i} ---")
+        print(doc.page_content.strip())
+        print()
 
-    # Show top retrieved chunks
-    print("\n🔎 Top Retrieved Chunks:")
-    for i, doc in enumerate(retrieved_docs, start=1):
-        print(f"\n--- Chunk {i} ---")
-        print(doc.page_content[:300], "...")  # show first 300 chars
+    # Build summarizer (2 sentences for concise summary)
+    summarizer = build_summarizer(config["chat_deployment"], sentences=2)
 
-    # Combine retrieved chunks into text
-    retrieved_text = " ".join([doc.page_content for doc in retrieved_docs])
+    # Combine retrieved docs into one string for summarization
+    combined_text = " ".join(doc.page_content for doc in retrieved_docs)
+    summary = summarizer.invoke({"text": combined_text})
 
-    # Build summarizer
-    summarizer = build_summarizer(
-        api_key=config["api_key"],
-        endpoint=config["endpoint"],
-        deployment=config["deployment"],   # Chat model deployment
-        api_version=config["api_version"],
-        sentences=3
-    )
-
-    # Run summary
-    summary = summarizer.run(retrieved_text)
-
-    print("\n📝 Final Summary:")
-    print(summary)
+    print("📝 Final Summary:")
+    print(summary.content)
 
 
 if __name__ == "__main__":
