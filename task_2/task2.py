@@ -5,47 +5,31 @@ from components.summarizer import build_summarizer
 def main():
     config = load_config()
 
-    text = """
-    Artificial intelligence (AI) has rapidly evolved over the past few decades, transforming industries
-    and reshaping the way humans interact with technology. Originally rooted in academic research
-    focused on problem-solving and symbolic methods, AI has now become a cornerstone of modern
-    computing, driven by machine learning and deep neural networks. In healthcare, AI systems assist
-    doctors in diagnosing diseases more accurately and developing personalized treatment plans. In
-    finance, algorithms detect fraudulent transactions and automate trading at speeds beyond human
-    capability. The transportation sector is witnessing breakthroughs through self-driving cars and
-    intelligent traffic management systems. Meanwhile, AI-powered chatbots and virtual assistants are
-    revolutionizing customer service by providing instant, around-the-clock support. Despite these
-    advancements, challenges persist, including bias in AI models, ethical concerns about data usage,
-    and fears of job displacement due to automation. Policymakers, researchers, and industry leaders
-    are increasingly collaborating to ensure that AI is developed and deployed responsibly. As the field
-    continues to expand, AI holds the potential to tackle global issues such as climate change,
-    healthcare accessibility, and sustainable economic growth, making it one of the most important
-    technologies of the 21st century.
-    """
-
-    # 3 sentence summary
-    summarizer_3 = build_summarizer(
-        api_key=config["api_key"],
-        endpoint=config["endpoint"],
-        deployment=config["deployment"],
-        api_version=config["api_version"],
-        sentences=3
+    input_text = (
+        "Artificial Intelligence (AI) refers to the simulation of human intelligence "
+        "in machines that are programmed to think like humans and mimic their actions. "
+        "The term may also be applied to any machine that exhibits traits associated "
+        "with a human mind such as learning and problem-solving. AI has become an "
+        "essential part of the technology industry, helping to solve many challenging "
+        "problems in computer science. Over the years, AI research has explored "
+        "various subfields including natural language processing, robotics, machine "
+        "learning, and deep learning. These technologies have led to advancements in "
+        "voice assistants, autonomous vehicles, recommendation systems, and more. "
+        "Despite its success, AI also raises ethical concerns, such as bias in "
+        "decision-making systems, job displacement, and privacy issues. Governments, "
+        "researchers, and organizations are working together to establish guidelines "
+        "to ensure AI is developed and used responsibly."
     )
-    result_3 = summarizer_3.run(text)
-    print("\n=== 3 Sentence Summary ===")
-    print(result_3)
 
-    # 1 sentence summary
-    summarizer_1 = build_summarizer(
-        api_key=config["api_key"],
-        endpoint=config["endpoint"],
-        deployment=config["deployment"],
-        api_version=config["api_version"],
-        sentences=1
-    )
-    result_1 = summarizer_1.run(text)
-    print("\n=== 1 Sentence Summary ===")
-    print(result_1)
+    # Summarizer with 3 sentences
+    summarizer_3 = build_summarizer(config["chat_deployment"], sentences=3)
+    print("🔹 3-sentence summary:")
+    print(summarizer_3.invoke({"text": input_text}).content)
+
+    # Summarizer with 1 sentence
+    summarizer_1 = build_summarizer(config["chat_deployment"], sentences=1)
+    print("\n🔹 1-sentence summary:")
+    print(summarizer_1.invoke({"text": input_text}).content)
 
 
 if __name__ == "__main__":
