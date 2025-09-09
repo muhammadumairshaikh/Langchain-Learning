@@ -29,7 +29,7 @@ def main():
         endpoint=config["endpoint"],
         deployment=config["deployment"],
         api_version=config["api_version"],
-        summary_sentences=3
+        sentences=3
     )
     result_3 = summarizer_3.run(text)
     print("\n=== 3 Sentence Summary ===")
@@ -41,7 +41,7 @@ def main():
         endpoint=config["endpoint"],
         deployment=config["deployment"],
         api_version=config["api_version"],
-        summary_sentences=1
+        sentences=1
     )
     result_1 = summarizer_1.run(text)
     print("\n=== 1 Sentence Summary ===")
