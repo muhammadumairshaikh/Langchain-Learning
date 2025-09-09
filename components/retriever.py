@@ -1,33 +1,34 @@
 # components/retriever.py
 
+
 from langchain_community.document_loaders import TextLoader
-from langchain.text_splitter import CharacterTextSplitter
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import FAISS
 from langchain_openai import AzureOpenAIEmbeddings
 
-def build_retriever(file_path, api_key, endpoint, embedding_deployment, api_version, chunk_size=200, overlap=20, k=3):
-   
-   # Load Text File
+
+def build_retriever(file_path: str, embedding_deployment: str, chunk_size=200, chunk_overlap=20):
+    """
+    Build a retriever using FAISS and Azure OpenAI embeddings.
+    Uses RecursiveCharacterTextSplitter for more natural chunking.
+    """
     loader = TextLoader(file_path, encoding="utf-8")
-    documents = loader.load()
+    docs = loader.load()
 
-    # Split text into chunks
-    splitter = CharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=overlap)
-    docs = splitter.split_documents(documents)
-    print(f" Total chunks created: {len(docs)}")
-
-    # Create embeddings
-    embeddings = AzureOpenAIEmbeddings(
-        openai_api_key=api_key,
-        azure_endpoint=endpoint,
-        deployment=embedding_deployment,   
-        openai_api_version=api_version,
+    splitter = RecursiveCharacterTextSplitter(
+        chunk_size=chunk_size,
+        chunk_overlap=chunk_overlap,
     )
+    splits = splitter.split_documents(docs)
 
-    # Build FAISS vector store
-    vectorstore = FAISS.from_documents(docs, embeddings)
-    print(f" Total embedding vectors stored: {len(vectorstore.index_to_docstore_id)}")
+    print(f"✅ Total chunks created: {len(splits)}")
 
-    # Retriever
-    retriever = vectorstore.as_retriever(search_type="similarity", search_kwargs={"k": k})
-    return retriever, docs
+    # Initialized embedding model
+    embeddings = AzureOpenAIEmbeddings(deployment=embedding_deployment)
+
+    # Saved in FAISS Vector Store
+    vectorstore = FAISS.from_documents(splits, embeddings)
+
+    return vectorstore.as_retriever()
+
+
