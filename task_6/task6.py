@@ -44,10 +44,10 @@ def main():
     )
 
     print("\n--- Summarizing Machine Learning ---")
-    print(summarizer_buffer.invoke({"text": text_ml})["text"])
+    print(summarizer_buffer.invoke({"text": text_ml}).content)
 
     print("\n--- Summarizing Deep Learning (with buffer memory) ---")
-    print(summarizer_buffer.invoke({"text": text_dl})["text"])
+    print(summarizer_buffer.invoke({"text": text_dl}).content)
 
     # --- 2. Using ConversationSummaryMemory ---
     print("\n=== Using ConversationSummaryMemory ===")
@@ -60,10 +60,11 @@ def main():
     )
 
     print("\n--- Summarizing Machine Learning ---")
-    print(summarizer_summary.invoke({"text": text_ml})["text"])
+    print(summarizer_summary.invoke({"text": text_ml}).content)
 
     print("\n--- Summarizing Deep Learning (with summary memory) ---")
-    print(summarizer_summary.invoke({"text": text_dl})["text"])
+    print(summarizer_summary.invoke({"text": text_dl}).content)
+
 
 
 if __name__ == "__main__":
