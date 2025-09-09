@@ -1,34 +1,26 @@
-# components/summarizer.py
-
+import os
 from langchain_openai import AzureChatOpenAI
 from langchain.prompts import PromptTemplate
-from langchain.chains import LLMChain
 
-def build_summarizer(api_key, endpoint, deployment, api_version, sentences=3, temperature=0.1):
+
+def build_summarizer(deployment_name: str, sentences: int = 3):
     """
-    Returns an LLMChain that summarizes text into a given number of sentences.
+    Build a summarizer chain using AzureChatOpenAI.
     """
     llm = AzureChatOpenAI(
-        openai_api_key=api_key,
-        azure_endpoint=endpoint,
-        deployment_name=deployment,
-        openai_api_version=api_version,
-        temperature=temperature
+        deployment_name=deployment_name,
+        temperature=0,
+        # api_version=os.getenv("AZURE_OPENAI_API_VERSION")
     )
 
-    prompt_template = PromptTemplate(
+    prompt = PromptTemplate(
         input_variables=["text"],
-                template=f"""
-                You are an expert summarizer.
+        template=(
+            "You are an expert summarizer. Summarize the following text "
+            f"in exactly {sentences} sentence(s). Avoid redundancy and repetition.\n\n"
+            "Text: {text}"
+        ),
+    )
 
-                Task: Summarize the following text into exactly {sentences} sentence(s).
-                - Do not write more or fewer sentences.
-                - Each sentence should be concise, factual, and focused.
-                - Avoid introductions, commentary, or meta text.
+    return prompt | llm
 
-                Text:
-                {{text}}
-                """
-            )
-
-    return LLMChain(llm=llm, prompt=prompt_template)
