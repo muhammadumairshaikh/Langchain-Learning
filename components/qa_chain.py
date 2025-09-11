@@ -1,17 +1,11 @@
 # components/qa_chain.py
 
 from langchain.prompts import PromptTemplate
-from langchain.chains import LLMChain
 from langchain_openai import AzureChatOpenAI
-
 
 def build_qa_chain(deployment_name: str, temperature: float = 0):
     """
-    Build a Question-Answering chain.
-    The chain takes:
-      - context (the text to answer from)
-      - question (the user query)
-    and returns a concise answer.
+    Build a Question-Answering chain using the new RunnableSequence style.
     """
 
     # Prompt
@@ -31,11 +25,8 @@ def build_qa_chain(deployment_name: str, temperature: float = 0):
         temperature=temperature,
     )
 
-    # QA Chain
-    qa_chain = LLMChain(
-        llm=llm,
-        prompt=prompt,
-        verbose=True 
-    )
+    # Runnable chain
+    qa_chain = prompt | llm
 
-    return qa_chain
+    # Add verbose logging to the chain
+    return qa_chain.with_config(verbose=True)

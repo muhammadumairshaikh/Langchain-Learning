@@ -22,7 +22,7 @@ def main():
     summary = summarizer.invoke({"text": full_text})
     summary_text = summary.content if hasattr(summary, "content") else summary
 
-    print("\n=== Summary of ai_intro.txt ===")
+    print("\n=== Summary of Document ===")
     print(summary_text)
 
     # QA Chain
@@ -34,12 +34,12 @@ def main():
     # QA for Summary
     print("\n=== QA on Summary ===")
     answer_summary = qa_chain.invoke({"context": summary_text, "question": question})
-    print(answer_summary["text"])
+    print(answer_summary.content)
 
     # QA for full document
     print("\n=== QA on Full Document ===")
     answer_full = qa_chain.invoke({"context": full_text, "question": question})
-    print(answer_full["text"])
+    print(answer_full.content)
 
 
 if __name__ == "__main__":
