@@ -1,35 +1,9 @@
 # task_7/task7.py
 
 from langchain_community.document_loaders import PyPDFLoader, WebBaseLoader
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_community.vectorstores import FAISS
-from langchain_openai import AzureOpenAIEmbeddings
 from components.config_loader import load_config
 from components.summarizer import build_summarizer
-
-
-def load_and_split_pdf(path: str, chunk_size: int = 150, chunk_overlap: int = 30):
-    """Load and split a PDF document into chunks."""
-    loader = PyPDFLoader(path)
-    docs = loader.load()
-
-    splitter = RecursiveCharacterTextSplitter(
-        chunk_size=chunk_size,
-        chunk_overlap=chunk_overlap
-    )
-    return splitter.split_documents(docs)
-
-
-def load_and_split_web(url: str, chunk_size: int = 150, chunk_overlap: int = 30):
-    """Load and split a webpage into chunks."""
-    loader = WebBaseLoader(url)
-    docs = loader.load()
-
-    splitter = RecursiveCharacterTextSplitter(
-        chunk_size=chunk_size,
-        chunk_overlap=chunk_overlap
-    )
-    return splitter.split_documents(docs)
+from components.retriever import build_retriever
 
 
 def clean_text(text: str) -> str:
@@ -61,25 +35,22 @@ def main():
     for doc in web_docs:
         doc.page_content = clean_text(doc.page_content)
 
-    # --- Split into chunks ---
-    splitter = RecursiveCharacterTextSplitter(chunk_size=150, chunk_overlap=30)
-    pdf_chunks = splitter.split_documents(pdf_docs)
-    web_chunks = splitter.split_documents(web_docs)
-
-    # --- Embeddings ---
-    embeddings = AzureOpenAIEmbeddings(
-        deployment=config["embedding_deployment"],
+    # --- Retrievers ---
+    pdf_retriever = build_retriever(
+        embedding_deployment=config["embedding_deployment"],
+        docs=pdf_docs,
+        chunk_size=150,
+        chunk_overlap=30,
+    )
+    web_retriever = build_retriever(
+        embedding_deployment=config["embedding_deployment"],
+        docs=web_docs,
+        chunk_size=150,
+        chunk_overlap=30,
     )
 
-    # --- Vector stores ---
-    pdf_store = FAISS.from_documents(pdf_chunks, embeddings)
-    web_store = FAISS.from_documents(web_chunks, embeddings)
-
-    pdf_retriever = pdf_store.as_retriever()
-    web_retriever = web_store.as_retriever()
-
     # --- Build summarizer ---
-    summarizer = build_summarizer(config["chat_deployment"], sentences=3)
+    summarizer = build_summarizer(config["chat_deployment"], sentences=1)
 
     # --- Query both sources ---
     query = "AI challenges"
