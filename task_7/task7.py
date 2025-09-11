@@ -27,8 +27,12 @@ def main():
     pdf_loader = PyPDFLoader("task_7/ai_ethics.pdf")
     pdf_docs = pdf_loader.load()
 
-    # --- Load Webpage ---
-    web_loader = WebBaseLoader("https://builtin.com/artificial-intelligence/ai-challenges")
+    # --- Load Webpage (with user-agent) ---
+    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+    web_loader = WebBaseLoader(
+        "https://builtin.com/artificial-intelligence/ai-challenges",
+        requests_kwargs={"headers": headers},
+    )
     web_docs = web_loader.load()
 
     # Clean webpage docs

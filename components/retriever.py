@@ -1,5 +1,3 @@
-# components/retriever.py
-
 from typing import Union, List
 from langchain_community.document_loaders import TextLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -10,7 +8,7 @@ from langchain.retrievers import MultiQueryRetriever
 
 
 def build_retriever(
-    embedding_deployment: str,
+    embedding_deployment: str = None,
     file_path: str = None,
     docs: Union[List[Document], None] = None,
     chunk_size: int = 200,
@@ -35,6 +33,13 @@ def build_retriever(
         use_multi_query: Whether to enable multi-query retriever.
         chat_deployment: Chat model deployment (required for multi-query).
     """
+    
+    if file_path and embedding_deployment:
+        if file_path.endswith(".txt") and not embedding_deployment.endswith(".txt"):
+            pass
+        elif not file_path.endswith(".txt") and embedding_deployment.endswith(".txt"):
+            file_path, embedding_deployment = embedding_deployment, file_path
+
     if not file_path and not docs:
         raise ValueError("Either file_path or docs must be provided.")
 

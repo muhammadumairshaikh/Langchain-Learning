@@ -10,7 +10,10 @@ def main():
     query = "AI milestones"
 
     # Build retriever
-    retriever = build_retriever(file_path, config["embedding_deployment"])
+    retriever = build_retriever(
+    embedding_deployment=config["embedding_deployment"],
+    file_path=file_path
+    )   
 
     # Retrieve top chunks
     retrieved_docs = retriever.get_relevant_documents(query)

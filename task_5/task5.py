@@ -11,8 +11,8 @@ def main():
 
     # --- Build tools ---
     retriever_tool = create_retriever_tool(
+        embedding_deployment=config["embedding_deployment"],
         file_path="task_3/ai_intro.txt",
-        embedding_deployment=config["embedding_deployment"]
     )
     summarizer_tool = create_text_summarizer_tool(
         deployment_name=config["chat_deployment"],
