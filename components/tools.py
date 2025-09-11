@@ -1,9 +1,9 @@
 # # components/tools.py
 
-# components/tool.py
 from langchain.tools import Tool
 from components.summarizer import build_summarizer
 from components.retriever import build_retriever
+from datetime import date
 
 def create_text_summarizer_tool(
     deployment_name: str,
@@ -55,3 +55,28 @@ def create_word_count_tool(
         return f"Word count: {len(text.split())}"
 
     return Tool(name=name, func=_count_words, description=description)
+
+
+def create_current_date_tool(
+    name: str = "CurrentDate",
+    description: str = "Fetches today's current date in YYYY-MM-DD format."
+) -> Tool:
+    """Tool to return today's date."""
+    def _get_date(_: str = "") -> str:  
+        return date.today().isoformat()
+
+    return Tool(name=name, func=_get_date, description=description)
+
+def create_mock_web_search_tool(
+    name: str = "MockWebSearch",
+    description: str = "Performs a fake web search and returns a static 50-word response."
+) -> Tool:
+    """Tool to simulate a web search by returning static content."""
+    def _search(query: str) -> str:
+        return (
+            "This is a mock web search result. Artificial Intelligence (AI) is rapidly evolving, "
+            "with major trends including generative AI, responsible AI practices, "
+            "edge AI for IoT devices, and integration into business workflows. "
+            "These updates reflect how AI is shaping industries in 2025."
+        )
+    return Tool(name=name, func=_search, description=description)

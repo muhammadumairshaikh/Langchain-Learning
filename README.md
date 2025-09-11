@@ -370,3 +370,45 @@ Summary-based QA gave a concise but less detailed answer.
 Full-document QA provided richer context, explaining why the event was pivotal and how it shaped AI’s origins.
 
 **Conclusion:** Summaries make QA faster and focused, but full documents ensure completeness and richer detail.
+
+
+# Task 11: Integrating External Tools with Agents
+
+Extend the agent from Task 5 by:
+- Adding a tool that fetches the current date using Python’s datetime module, Testing the agent and adding a second tool that performs a mock web search (returning a static 50-word response).
+
+⚙️ Approach
+
+- Extended tools.py:
+
+1. Added create_date_tool() → gets today’s date from datetime.date.today().
+
+2. Added create_mock_web_search_tool() → simulates a search by returning a static AI trends response.
+
+**Results**
+
+Test 1: Summarize + Date
+
+Query:
+“Summarize this 100-word text about AI and tell me today’s date.”
+
+Agent Output:
+Artificial intelligence (AI) has rapidly evolved into a transformative technology that allows machines to perform tasks requiring human-like intelligence across various industries, including healthcare and finance. Ongoing advancements in machine learning and neural networks enhance automation and efficiency, while ethical considerations such as fairness and accountability are crucial for its responsible development. As AI continues to advance, it presents both significant opportunities and challenges for the future of humanity. Today's date is 2025-09-11.
+
+Test 2: Summarize + Search
+
+Query:
+“Summarize AI trends and search for recent updates.”
+
+Agent Output:
+Recent AI trends include generative AI, responsible AI practices, and edge AI for IoT devices, which are influencing business workflows. These advancements are expected to significantly impact various industries by 2025.
+
+✅ Conclusion
+
+- The agent was successfully extended with external tools while keeping agent.py reusable.
+
+- The CurrentDate tool integrated real-time Python functionality.
+
+- The MockWebSearch tool simulated external information access.
+
+- Results show the agent can now combine summarization with external actions, making it more powerful and adaptable for future tasks.
