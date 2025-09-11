@@ -1,7 +1,7 @@
 # LangChain Summarization ProjectA
-Project to master LangChain through structured tasks. 
+# Project to master LangChain through structured tasks. 
 **Contributor:** 
-- Muhammad Umair Shaikh
+- # Muhammad Umair Shaikh
 
 
 ## Tasks Completed  
