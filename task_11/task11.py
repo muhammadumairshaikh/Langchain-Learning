@@ -37,13 +37,15 @@ def main():
     )
 
     query1 = f"Summarize this text: {text} And also tell me today's date."
-    print(agent.run(query1))
+    result1 = agent.invoke(query1)
+    print(result1["output"])
 
 
     # --- Test 2 ---
     print("\n=== Test 2: Summarize + Search ===")
     query2 = "Summarize AI trends and search for recent updates."
-    print(agent.run(query2))
+    result2 = agent.invoke(query2)
+    print(result2["output"])
 
 if __name__ == "__main__":
     main()
